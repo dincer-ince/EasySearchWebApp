@@ -1,0 +1,18 @@
+import { Component, EventEmitter, Output } from '@angular/core';
+import { UserService } from 'src/app/services/user.service';
+
+@Component({
+  selector: 'app-sidebar',
+  templateUrl: './sidebar.component.html',
+  styleUrls: ['./sidebar.component.css']
+})
+export class SidebarComponent {
+  @Output() toggleSide: EventEmitter<any> = new EventEmitter();
+
+  constructor(public service:UserService){}
+
+  toggleSideBar(){
+    this.toggleSide.emit();
+  }
+
+}

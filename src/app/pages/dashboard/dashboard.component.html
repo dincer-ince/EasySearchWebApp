@@ -1,0 +1,78 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <span>Dashboard</span>
+    </mat-toolbar-row>
+</mat-toolbar>
+<div style="margin-top:70px" fxLayout="row" fxLayoutAlign="center start">
+    <div style="max-width: 70rem; width:100%" fxLayout="column" *ngIf="this.user | async as user;else loading">
+    
+        <div fxLayout="row" >
+            <h1 style="font-size: 3rem;font-weight: lighter;">Welcome, {{user.userName |titlecase}}</h1>
+            
+        </div>
+
+        <div style="margin-top:40px;text-align: center; font-weight: bolder;" fxLayout="row wrap" fxLayoutAlign="space-around center">
+            <mat-card fxFlex.lt-sm="50">
+                <mat-card-header>
+                    <h3 mat-subheader>Total Dictionaries</h3>
+                </mat-card-header>
+                <mat-card-content>
+                    {{user.dictionaries.length}}
+                </mat-card-content>
+            </mat-card>
+            <mat-card fxFlex.lt-sm="50">
+                <mat-card-header>
+                    <h3 mat-subheader>Total API Keys</h3>
+                </mat-card-header>
+                <mat-card-content>
+                    {{user.apiKeys.length}}
+                </mat-card-content>
+            </mat-card>
+            <mat-card fxFlex.lt-sm="50">
+                <mat-card-header>
+                    <h3 mat-subheader>Total Documents</h3>
+                </mat-card-header>
+                <mat-card-content>
+                    {{numberOfDocuments}}
+                </mat-card-content>
+            </mat-card>
+            <mat-card fxFlex.lt-sm="50">
+                <mat-card-header>
+                    <h3 mat-subheader>Total Words</h3>
+                </mat-card-header>
+                <mat-card-content>
+                    {{numberOfWords}}
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <h1 style="margin-top:40px" *ngIf="user.dictionaries.length>0">{{user.dictionaries.length}} Dictionaries</h1>
+        <div fxLayout="column" fxLayoutAlign="center" fxLayoutGap="20px">
+            <ng-container *ngFor="let item of user.dictionaries">
+                <mat-card>
+                    <mat-card-content>
+                        <div fXlayout="row" fxLayoutAlign="center center">
+                            <div fxFlex="30">{{item.name}}</div>
+                            <div fxFlex="30">
+                                {{item.numberOfDocuments}} Documents
+                            </div>
+                            <div fxFlex="30" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="10px">
+                                <button routerLink="/Dictionary/{{item.id}}" mat-raised-button color="primary"><mat-icon>folder</mat-icon>View</button>
+                                <button routerLink="/Dictionary-Manager" mat-raised-button color="secondary"><mat-icon>edit</mat-icon>Edit</button>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </ng-container>
+        </div>
+
+        <div style="flex-grow: 1;"></div>
+    
+    </div>
+</div>
+
+<ng-template #loading>
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <mat-spinner></mat-spinner>
+    </div>
+</ng-template>

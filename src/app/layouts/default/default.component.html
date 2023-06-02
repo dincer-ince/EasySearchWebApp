@@ -1,0 +1,17 @@
+<app-header (toggleSide)="sideBarOpen=!sideBarOpen"></app-header>
+<div *ngIf="this.viewPort.isDesktop | async; else mobile" style="min-height: 64px;"></div>
+
+<mat-drawer-container>
+    <mat-drawer class="mat-elevation-z6" [mode]="(this.viewPort.isDesktop | async)? 'side' : 'over'" [opened]="sideBarOpen">
+        <app-sidebar (toggleSide)="sideBarOpen=!sideBarOpen"></app-sidebar>
+    </mat-drawer>
+    <mat-drawer-content>
+        <router-outlet></router-outlet>
+    </mat-drawer-content>
+    
+</mat-drawer-container>
+
+<ng-template #mobile>
+    <div style="min-height: 56px;"></div>
+</ng-template>
+

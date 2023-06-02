@@ -1,0 +1,50 @@
+<div fxLayout="column" fxLayoutAlign="start center">
+    <mat-toolbar
+      color="primary"
+    >
+      <mat-toolbar-row *ngIf="!(this.viewport.isDesktop | async)">
+          <span>Dictionary</span>
+      </mat-toolbar-row>
+      <mat-toolbar-row >
+        <span *ngIf="(this.viewport.isDesktop | async)" style="position: absolute;" >Dictionary</span>
+        <div style="width: 100%;" fxLayout="row" fxLayoutAlign="center center">
+          <mat-form-field  [style]="(this.viewport.isDesktop|async)? 'width:60vw;margin-bottom:-8px;margin-top:13px':'width:100%;'" appearance="fill">
+              <mat-label>Search</mat-label>
+              <input #searchInput (keyup.enter)="this.search(searchInput.value)" matInput placeholder="">
+              <button
+              type="submit"
+              (click)="this.search(searchInput.value)"
+              color="primary"
+              mat-icon-button
+              matSuffix
+            >
+              <mat-icon>search</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    
+    <div style="min-height:50px"></div>
+    <div *ngIf="this.dictionary" fxLayout="row" style="width:60vw" fxLayoutGap="20px" fxLayoutAlign="space-between center">
+            <div style="display:flex; flex-direction: row;">
+                <h1 style="margin-right: 20px;font-size: 3rem;font-weight: lighter;">{{this.dictionary.name}}</h1>
+                <button [routerLink]="['/Dictionary-Manager']" style="margin-bottom:16px;" mat-icon-button ><mat-icon>edit</mat-icon></button>
+                <button (click)="addNew()"  style="margin-bottom:16px;" mat-icon-button ><mat-icon>add</mat-icon></button>
+            </div>
+            <h1 style="margin-right: 20px;font-size: 3rem;font-weight: lighter;">{{this.dictionary.numberOfDocuments}}</h1>
+    </div>
+    
+    <div style="margin-top:20px; width:100%" fxLayout="column" fxLayoutAlign="center center">
+        <div [style]="(this.viewport.isDesktop|async)? 'width:60vw;':'width:100%;'" *ngIf="this._documentList |async;else loading">
+            <app-document-list [documentList]="this.documentList" [isSearch]="this.isSearch"></app-document-list>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #loading>
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <mat-spinner></mat-spinner>
+    </div>
+</ng-template>

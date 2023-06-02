@@ -1,0 +1,52 @@
+<div fxFlex fxLayout="column" fxLayoutAlign="start center">
+  <mat-toolbar class="mat-elevation-z6" color="primary">
+    <span>Api Key Manager</span>
+  </mat-toolbar>
+
+  <div style="min-height: 70px"></div>
+
+  <div
+    fxLayout="column"
+    *ngIf="this.service.user | async as user; else loading"
+  >
+    <div style="display: flex; flex-direction: row; margin-bottom: 40px">
+      <h1 style="margin-right: 20px; font-size: 3rem; font-weight: lighter">
+        {{ this.user.apiKeys.length }} API Keys
+      </h1>
+      <button (click)="isAddNew=!isAddNew" style="margin-bottom: 16px" mat-icon-button>
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+    <div fxLayout="row" *ngIf="isAddNew">
+        <mat-form-field color="primary" style="margin-right:20px;" appearance="fill">
+            <mat-label>Key Name</mat-label>
+            <input matInput #new />
+            <mat-icon matPrefix>add</mat-icon>
+        </mat-form-field>
+        <button (click)="addNewKey(new.value)" style="margin-left:10px;height:56px" color="primary" mat-raised-button>Add New</button>
+      </div>
+
+    <ng-container *ngFor="let key of user.apiKeys">
+        <mat-card style="margin-bottom:20px" [style.width]="(this.viewport.isDesktop |async) ? '50vw':'95vw'">
+            <mat-card-header>
+                <div style="width:100%" fxLayout="row" fxLayoutAlign="space-between center">
+                    <h2 matSubheader>{{key.name}}</h2>
+                    <p matDialogContent>Permissions not Implemented</p>
+                    <div style="margin-top:-12px" fxLayout="row" fxLayoutGap="10px">
+                        <button [cdkCopyToClipboard]="key.value" mat-icon-button color="primary"><mat-icon>content_copy</mat-icon></button>
+                        <button (click)="deleteKey(key.id)" mat-icon-button color="warn"><mat-icon>delete</mat-icon></button>
+                    </div>
+                </div>
+            </mat-card-header>
+        </mat-card>
+
+    </ng-container>
+        
+  </div>
+</div>
+
+<ng-template #loading>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>

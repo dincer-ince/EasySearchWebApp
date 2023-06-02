@@ -1,0 +1,66 @@
+<div
+  *ngIf="this.service.user | async as user"
+  style="display: flex; flex-direction: column; height: 100%"
+>
+  <mat-nav-list>
+    <div class="profile-card">
+      <div>
+        <h1 matHeader style="margin: 0">{{ user.userName | titlecase}}</h1>
+      </div>
+      <img src="assets/logo.png" class="img" />
+      <!-- https://imgur.com/ZuutUvY -->
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div style="padding-left: 10px">
+      <h2 matSubheader>Pages</h2>
+      <a mat-list-item (click)="toggleSideBar()" [routerLink]="['/']"
+        ><span class="icon material-icons-outlined">dashboard</span>Dashboard</a
+      >
+      <mat-divider></mat-divider>
+      <a mat-list-item (click)="toggleSideBar()" [routerLink]="['/Dictionary-Manager']"
+        ><span class="icon material-icons-outlined">topic</span>Dictionary Manager</a
+      >
+      <mat-divider></mat-divider>
+      <a
+        mat-list-item
+        (click)="toggleSideBar()"
+        [routerLink]="['/Api-Keys']"
+        ><span class="icon material-icons-outlined">group</span>API Key Manager</a
+      >
+      <mat-divider></mat-divider>
+      <a mat-list-item (click)="toggleSideBar()" [routerLink]="['/User']"
+        ><span class="icon material-icons-outlined">manage_accounts</span>User Settings</a
+      >
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div
+      *ngIf="(this.service.dictionaries | async) as dictionaries"
+      style="margin-top: 20px; padding-left: 10px"
+    >
+      <h2 matSubheader>Dictionaries</h2>
+      <ng-container
+        *ngFor="let dictionary of dictionaries"
+        ><a
+          mat-list-item
+          (click)="toggleSideBar()"
+          [routerLink]="['/Dictionary/'+dictionary.id]"
+          ><span class="icon material-icons-outlined">
+            folder
+            </span>{{dictionary.name}}</a
+        ></ng-container
+      >
+    </div>
+  </mat-nav-list>
+  <div style="flex-grow: 1"></div>
+
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <button (click)="this.service.logOut()" mat-raised-button> Log Out</button>
+  </div>
+    <p style="text-align: center; padding: 10px">
+    EasySearch 2023 All rights reserved
+  </p>
+</div>

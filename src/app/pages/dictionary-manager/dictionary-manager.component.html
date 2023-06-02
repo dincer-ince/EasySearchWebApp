@@ -1,0 +1,98 @@
+<div fxFlex fxLayout="column" fxLayoutAlign="start center">
+  <mat-toolbar class="mat-elevation-z6" color="primary">
+    <span>Dictionary Manager</span>
+  </mat-toolbar>
+
+  <div style="min-height: 70px"></div>
+
+  <div
+    fxLayout="column"
+    *ngIf="this.service.user | async as user; else loading"
+  >
+    <div style="display: flex; flex-direction: row;margin-bottom: 40px;">
+      <h1 style="margin-right: 20px; font-size: 3rem; font-weight: lighter">
+        {{ this.user.dictionaries.length }} Dictionaries
+      </h1>
+      <button (click)="addDictionary(user.id)" style="margin-bottom: 16px" mat-icon-button>
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+    <ng-container  *ngFor="let dictionary of user.dictionaries">
+        <mat-expansion-panel style="margin-bottom:20px" [style.width]="(this.viewport.isDesktop |async) ? '50vw':'95vw'">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{dictionary.name}}
+              </mat-panel-title>
+              <mat-panel-description>
+                {{dictionary.numberOfDocuments}} Documents and {{dictionary.extraFieldDescription.length}} Extra fields
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <mat-divider></mat-divider>
+            <div fxLayout.lt-lg="column" fxLayout.lg="column" fxLayout.gt-lg="row" fxLayoutAlign.gt-lg="space-between" style="margin-top: 10px; margin-bottom: 10px;">
+                <div  fxLayout="row">
+                  <mat-form-field appearance="fill">
+                      <mat-label>Name</mat-label>
+                      <input matInput #title value="{{dictionary.name}}" />
+                      <mat-icon matPrefix>edit</mat-icon>
+                  </mat-form-field>
+                  <button (click)="editTitle(dictionary.id,title.value)" style="height:56px;margin-left: 20px;" mat-raised-button color="primary">Update Name</button>
+                </div>
+                <div  fxLayout="row">
+                  <mat-form-field appearance="fill">
+                      <mat-label>Search Technique</mat-label>
+                      <mat-select #searchPref value="{{dictionary.preferredSearch}}">
+                        <mat-option value="0">Vectorized Search</mat-option>
+                        <mat-option value="1">Exact Search</mat-option>
+                        <mat-option [disabled]="true">Query Expanded</mat-option>
+                      </mat-select>
+                      <mat-icon matPrefix>search</mat-icon>
+                  </mat-form-field>
+                  <button (click)="editSearch(dictionary.id,searchPref.value)" style="height:56px;margin-left: 20px;" mat-raised-button color="primary">Update Search</button>
+                </div>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <h3 style="padding:10px;text-align: center; font-weight: 500;" > Extra Field Descriptions</h3>
+
+            <div fxLayout.gt-md="row wrap" fxLayoutAlign.gt-md="" fxLayout.md="column" fxLayout.lt-md="column" >
+                <ng-container *ngFor="let extraField of dictionary.extraFieldDescription;index as i">
+                    <div fxFlex.gt-md="50" fxFlex.lt-md="100" fxFlex.md="100" fxLayout="row">
+                        <mat-form-field style="width:100%" appearance="fill">
+                            <mat-label>Description</mat-label>
+                            <input matInput [value]="extraField" />
+                            <mat-icon matPrefix>edit</mat-icon>
+                        </mat-form-field>
+                        <button (click)="deleteField(dictionary,i)" style="margin-left:10px;margin-right:40px" mat-fab color="warn"><mat-icon>delete</mat-icon></button>
+                    </div>
+                </ng-container>
+                <div fxFlex.gt-md="50" fxFlex.lt-md="100" fxFlex.md="100" fxLayout="row">
+                    <mat-form-field style="width:100%" appearance="fill">
+                        <mat-label>Description</mat-label>
+                        <input matInput #newField />
+                        <mat-icon matPrefix>edit</mat-icon>
+                    </mat-form-field>
+                    <button [disabled]="newField.value==''" (click)="dictionary.extraFieldDescription.push(newField.value)" style="margin-left:10px;margin-right:40px" mat-fab color="primary"><mat-icon>add</mat-icon></button>
+                </div>
+            </div>
+            <div style="margin-bottom:10px" fxLayout="row" fxLayoutAlign="center center">
+                <button mat-raised-button color="primary" (click)="updateFields(dictionary)">Update Fields</button>
+            </div>
+            <mat-divider></mat-divider>
+            <div style="margin-top:10px" fxLayout="row" fxLayoutAlign="center center">
+                <button mat-raised-button color="warn" (click)="deleteDictionary(dictionary)">Delete Dictionary</button>
+            </div>
+
+          </mat-expansion-panel>
+    </ng-container>
+
+
+  </div>
+</div>
+
+<ng-template #loading>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>

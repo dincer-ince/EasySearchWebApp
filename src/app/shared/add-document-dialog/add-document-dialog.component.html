@@ -1,0 +1,35 @@
+<ng-container *ngIf="!this.isLoading;else loading">
+    <h2 mat-dialog-title>Add New Document</h2>
+    <mat-dialog-content [style]="(this.viewport.isDesktop | async) ? 'width:40rem':''" class="mat-typography">
+    
+        <mat-form-field style="width: 100%;" appearance="fill">
+            <mat-label>Title</mat-label>
+            <input matInput #name >
+        </mat-form-field>
+        <mat-divider style="margin-bottom: 20px;"></mat-divider>
+
+        <mat-form-field style="width: 100%;" appearance="fill">
+            <mat-label>Document</mat-label>
+            <textarea rows="7" matInput #text ></textarea>
+        </mat-form-field>
+    
+        <mat-divider style="margin-bottom: 20px;"></mat-divider>
+    
+        <ng-container *ngFor="let extraField of this.extraFieldDescription|async;index as i">
+            <div style="width: 100%;" fxLayout="row" fxLayoutGap="20px">
+                <mat-form-field style="width: 100%;" appearance="fill">
+                    <mat-label>Field {{extraField}}</mat-label>
+                    <input matInput [(ngModel)]="this.extraFields[i]" />
+                </mat-form-field>
+            </div>
+        </ng-container>
+    
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button [disabled]="name.value=='' || text.value==''" (click)="submit(name.value,text.value)" mat-button>Submit</button>
+    </mat-dialog-actions>
+</ng-container>
+
+<ng-template #loading>
+    <mat-spinner></mat-spinner>
+</ng-template>

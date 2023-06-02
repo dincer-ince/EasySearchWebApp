@@ -1,0 +1,64 @@
+
+<mat-form-field style="width:100%" appearance="fill">
+    <mat-label>Filter</mat-label>
+    <input #filter matInput (keyup)="applyFilter(filter.value)" placeholder="">
+    <mat-icon matSuffix>filter_list</mat-icon>
+</mat-form-field>
+
+<div style="width:100%;" class="mat-elevation-z4">
+    <mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>
+            Id
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{ element.id }} </mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="title">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>
+            Title
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{ element.title }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="numOfWords">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>
+            Number Of Words
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{ element.numberOfWords }}
+          </mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="similarity">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>
+            Similarity %
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{ element.similarity |percent }}
+          </mat-cell>
+        </ng-container>
+    
+    
+    
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row
+          matRipple
+    
+          *matRowDef="let row; columns: displayedColumns"
+          (click)="this.navigate(row.id)"
+        ></mat-row>
+        <tr *matNoDataRow fxLayout="column" fxLayoutAlign="center center">
+          <mat-icon style="margin-top: 10px;font-size: 40px;height:40px;width:40px">search</mat-icon>
+          <h2 *ngIf="this.dataSource.filter==''" matCardSubtitle>No Results have been found</h2>
+          <h2 *ngIf="this.dataSource.filter!=''" matCardSubtitle>No Results that fits the filter "{{this.dataSource.filter}}"</h2>
+        </tr>
+      </mat-table>
+      <mat-divider></mat-divider>
+      <mat-paginator
+        [length]="100"
+        [pageSize]="10"
+        [pageSizeOptions]="[1, 5, 10, 25, 100]"
+        aria-label="Select page"
+      >
+      </mat-paginator>
+</div>
