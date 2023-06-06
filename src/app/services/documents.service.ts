@@ -22,7 +22,7 @@ export class DocumentsService {
    }
 
   // url:string="https://localhost:7041/api/";
-  url="https://easysearchapi.azurewebsites.net/api/";
+  url="https://easysearchserver.azurewebsites.net/api/";
 
   
 

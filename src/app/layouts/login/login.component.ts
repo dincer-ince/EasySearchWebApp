@@ -12,7 +12,7 @@ export class LoginComponent {
 
   constructor(private http:HttpClient,public router:Router){}
 
-  url="https://easysearchapi.azurewebsites.net/api/";
+  url="https://easysearchserver.azurewebsites.net/api/";
 
   loading:boolean=false;
   error:string=""

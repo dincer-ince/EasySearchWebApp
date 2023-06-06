@@ -39,7 +39,7 @@
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Password</mat-label>
-                        <input matInput #passwordReg>
+                        <input type="password" matInput #passwordReg>
                     </mat-form-field>
                     <div fxLayout="row" fxLayoutAlign="center">
                         <button [disabled]="userNameReg.value=='' || passwordReg.value ==''" (click)="register(userNameReg.value,passwordReg.value)" mat-raised-button color="primary">Register</button>
